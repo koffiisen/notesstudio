@@ -49,6 +49,14 @@ class Notes
 
     }
 
+    /**
+     * @return PDO
+     */
+    public function getDbConnect()
+    {
+        return $this->db_connect;
+    }
+
 
 }
 
