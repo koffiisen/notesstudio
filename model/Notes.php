@@ -1,6 +1,6 @@
 <?php
 
-require_once '../include/DBConnect.php';
+require_once '/include/DBConnect.php';
 
 /**
  * Class Notes
@@ -46,6 +46,22 @@ class Notes
             //Rollback the transaction.
             $this->db_connect->rollBack();
         }
+
+    }
+
+    public function getAll()
+    {
+        $sql = "SELECT * FROM notes";
+        $stmt = $this->db_connect->prepare($sql);
+        $stmt->execute();
+
+        /*$result = $stmt->fetchAll();
+        print_r($result);*/
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $json = json_encode($results);
+        echo $json;
+
 
     }
 
