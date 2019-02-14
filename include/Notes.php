@@ -1,6 +1,5 @@
 <?php
 
-require_once '/include/DBConnect.php';
 
 /**
  * Class Notes
@@ -11,36 +10,33 @@ class Notes
 
     function __construct()
     {
+        require_once 'DBConnect.php';
+
         $db = new DBConnect();
         $this->db_connect = $db->connect();
     }
 
     public function insert($data)
     {
-        $notes = $data->notes;
+        $notes = $data;
         $title = $notes->title;
-        $description = $notes->name;
+        $description = $notes->description;
         $create_date = $notes->create_date;
         $last_modif = $notes->last_modif;
         $username = $notes->username;
         $useremail = $notes->useremail;
 
+
         try {
-            $this->db_connect->beginTransaction();
 
-            $sql = "INSERT INTO notes (title, description, create_date, last_modif, username, useremail) VALUES (?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO notes (title, description, create_date, last_modif, username, useremail) VALUES (?,?,?,?,?,?)";
             $stmt = $this->db_connect->prepare($sql);
-            $stmt->execute(array(
-                    $title,
-                    $description,
-                    $create_date,
-                    $last_modif,
-                    $username,
-                    $useremail
-                )
-            );
+            $stmt->execute([$title, $description, $create_date, $last_modif, $username, $useremail]);
 
-            $this->db_connect->commit();
+            //echo $useremail;
+
+            echo "successful insert note on online database";
+
         } catch (Exception $e) {
             echo $e->getMessage();
             //Rollback the transaction.

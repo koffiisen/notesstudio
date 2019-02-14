@@ -7,15 +7,16 @@
  */
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST');
 header('Content-Type: application/json');
-require_once 'model/Notes.php';
-
-
-$response = [];
+require_once 'include/Notes.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $data = json_decode(file_get_contents("php://input"));
+    $data = json_decode($_POST["notes"]);
+
+    //print_r($data);
+    //echo $data->useremail;
+    //echo $data["last_modif"];
+
 
     if (isset($data->operation)) {
 
@@ -25,15 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($operation == 'addNote') {
 
-                if (isset($data->notes) && isset($data->notes->title)
-                    && isset($data->notes->create_date) && isset($data->notes->last_modif)
-                    && isset($data->notes->useremail)) {
+                if (isset($data->title)
+                    && isset($data->create_date) && isset($data->last_modif)
+                    && isset($data->useremail)) {
 
                     $note = new Notes();
                     $note->insert($data);
-
-                    $response["msg"] = "successful insert note on online database";
-                    echo json_encode($response);
 
                 }
 
